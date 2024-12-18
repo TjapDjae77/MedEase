@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+Sign Up - MedEase
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col">
+    <!-- Main Content -->
+    <div class="flex-1 flex">
+        <!-- Left Image Section -->
+        <div class="hidden lg:block lg:w-1/2">
+            <img src="{% static 'img/doctor-clipboard.svg' %}" alt="Doctor with Clipboard" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Right Form Section -->
+        <div class="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16 py-12">
+            <div class="max-w-md w-full mx-auto">
+                <div class="text-center mb-10">
+                    <h1 class="text-5xl font-bold text-[#1a237e] mb-4">Sign Up</h1>
+                    <p class="text-gray-600">
+                        Sign up now to consult with healthcare professionals and<br>
+                        manage your well-being from the comfort of your home.
+                    </p>
+                </div>
+
+                <form method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <div class="space-y-2">
+                        <label class="block text-gray-700">Email</label>
+                        {{ form.email|add_class:"w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"|attr:"placeholder:Enter your email" }}
+                        <div class="text-red-500 text-sm">
+                            {{ form.email.errors }}
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-gray-700">Full Name</label>
+                        {{ form.full_name|add_class:"w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"|attr:"placeholder:Enter your full name" }}
+                        <div class="text-red-500 text-sm">
+                            {{ form.full_name.errors }}
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 relative">
+                        <label class="block text-gray-700">Gender</label>
+                        {{ form.gender|add_class:"w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"|attr:"placeholder:Select your gender" }}
+                        <div class="text-red-500 text-sm">
+                            {{ form.gender.errors }}
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-gray-700">Password</label>
+                        {{ form.password1|add_class:"w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"|attr:"placeholder:Create a password" }}
+                        <div class="text-red-500 text-sm">
+                            {{ form.password1.errors }}
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-gray-700">Confirm Password</label>
+                        {{ form.password2|add_class:"w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"|attr:"placeholder:Confirm your password" }}
+                        <div class="text-red-500 text-sm">
+                            {{ form.password2.errors }}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-[#2196f3] text-white py-3 px-4 rounded-lg hover:bg-[#1a237e] transition-colors">
+                        Sign Up
+                    </button>
+                </form>
+
+                <p class="mt-6 text-center text-gray-600">
+                    Already have an account? 
+                    <a href="{% url 'login' %}" class="text-[#2196f3] hover:text-[#1a237e]">Log in here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[#1a237e] text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center space-x-2 mb-8">
+                <span class="text-[#2196f3] text-2xl">+</span>
+                <span class="text-2xl font-bold">MedEase</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-2 text-sm">
+                    <p>Jatinangor, Jawa Barat, Indonesia</p>
+                    <p>201005</p>
+                    <p>+62-88787878787</p>
+                    <p>info@medease.com</p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-blue-800">
+                <p class="text-sm text-center">
+                    Copyright ©2024 MedEase. All Rights Reserved
+                </p>
+            </div>
+        </div>
+    </footer>
+</div>
+{% endblock %} 

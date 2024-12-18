@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+Cari Dokter - MedEase
+{% endblock %}
+
+{% block content %}
+    <!-- Top Banner -->
+    <div class="bg-[#2196f3] text-white text-center py-2 px-4 text-sm">
+        <p>The health and well-being of our patients and their health care team will always be our priority, so we follow the best practices for cleanliness.</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white border-b">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="flex items-center">
+                        <span class="text-[#2196f3] text-2xl mr-1">+</span>
+                        <span class="text-2xl text-[#1a237e] font-bold">MedEase</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'find_doctor' %}" class="text-[#2196f3]">Cari Dokter</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Rumah Sakit</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Obat-obatan</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Operasi</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Riwayat</a>
+                    <a href="{% url 'profile' %}" class="text-[#1a237e] hover:text-[#2196f3]">Profil</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button class="text-gray-600 hover:text-gray-900 p-2">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-[#1a237e] mb-4">Cari Dokter, Buat Janji Temu</h1>
+            <p class="text-gray-500">Temukan dokter terbaik yang sesuai dengan jadwal Anda</p>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Filters Sidebar -->
+            <div class="lg:w-1/4">
+                <!-- Search -->
+                <div class="bg-white p-6 rounded-lg shadow-sm mb-6 border border-[#2196f3]">
+                    <h2 class="font-semibold mb-4">Pencarian</h2>
+                    <form method="get">
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                name="q"
+                                value="{{ search_query }}"
+                                placeholder="Cari dokter" 
+                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                            <button type="submit" class="absolute right-2 top-2 text-[#2196f3]">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Gender Filter -->
+                <div class="bg-white p-6 rounded-lg shadow-sm mb-6 border border-[#2196f3]">
+                    <h2 class="font-semibold mb-4">Gender Dokter</h2>
+                    <form method="get">
+                        {% if search_query %}
+                            <input type="hidden" name="q" value="{{ search_query }}">
+                        {% endif %}
+                        {% for speciality in speciality_filters %}
+                            <input type="hidden" name="speciality" value="{{ speciality }}">
+                        {% endfor %}
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="radio" 
+                                       name="gender" 
+                                       value="M" 
+                                       {% if gender_filter == 'M' %}checked{% endif %}
+                                       class="form-radio text-[#2196f3]"
+                                       onchange="this.form.submit()">
+                                <span class="ml-2">Laki-laki</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" 
+                                       name="gender" 
+                                       value="F" 
+                                       {% if gender_filter == 'F' %}checked{% endif %}
+                                       class="form-radio text-[#2196f3]"
+                                       onchange="this.form.submit()">
+                                <span class="ml-2">Perempuan</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" 
+                                       name="gender" 
+                                       value="" 
+                                       {% if not gender_filter %}checked{% endif %}
+                                       class="form-radio text-[#2196f3]"
+                                       onchange="this.form.submit()">
+                                <span class="ml-2">Semua</span>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Speciality Filter -->
+                <div class="bg-white p-6 rounded-lg shadow-sm mb-6 border border-[#2196f3]">
+                    <h2 class="font-semibold mb-4">Spesialisasi</h2>
+                    <form method="get">
+                        {% if search_query %}
+                            <input type="hidden" name="q" value="{{ search_query }}">
+                        {% endif %}
+                        {% if gender_filter %}
+                            <input type="hidden" name="gender" value="{{ gender_filter }}">
+                        {% endif %}
+                        <div class="space-y-2">
+                            {% for speciality in specialities %}
+                            <label class="flex items-center">
+                                <input type="checkbox" 
+                                       name="speciality" 
+                                       value="{{ speciality }}"
+                                       {% if speciality in speciality_filters %}checked{% endif %}
+                                       class="form-checkbox text-[#2196f3]"
+                                       onchange="this.form.submit()">
+                                <span class="ml-2">{{ speciality }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Doctors Grid -->
+            <div class="lg:w-3/4">
+                {% if 'q' in request.GET and search_query|length > 0 or gender_filter or speciality_filters %}
+                    <div class="mb-6">
+                        <p class="text-gray-600">
+                            Menampilkan 
+                            {% if gender_filter %}
+                                {% if gender_filter == 'M' %}dokter laki-laki
+                                {% elif gender_filter == 'F' %}dokter perempuan{% endif %}
+                            {% endif %}
+                            {% if speciality_filters %}
+                                {% if gender_filter %}dengan spesialisasi{% else %}spesialisasi{% endif %}
+                                {{ speciality_filters|join:", " }}
+                            {% endif %}
+                            {% if search_query|length > 0 %}
+                                {% if gender_filter or speciality_filters %}dengan pencarian{% else %}hasil pencarian{% endif %}
+                                "{{ search_query }}"
+                            {% endif %}
+                            {% with total=doctors|length %}
+                                ({{ total }} hasil)
+                            {% endwith %}
+                        </p>
+                    </div>
+                {% endif %}
+
+                {% if not doctors %}
+                    <div class="text-center py-12">
+                        <p class="text-gray-600">
+                            Tidak ada dokter yang ditemukan
+                            {% if gender_filter %}
+                                dengan gender 
+                                {% if gender_filter == 'M' %}laki-laki
+                                {% elif gender_filter == 'F' %}perempuan{% endif %}
+                            {% endif %}
+                            {% if speciality_filters %}
+                                {% if gender_filter %}dan{% endif %} spesialisasi {{ speciality_filters|join:", " }}
+                            {% endif %}
+                            {% if search_query|length > 0 %}
+                                {% if gender_filter or speciality_filters %}dan{% endif %} pencarian "{{ search_query }}"
+                            {% endif %}
+                        </p>
+                    </div>
+                {% else %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {% for doctor in doctors %}
+                        <div class="bg-white rounded-lg shadow-md hover:shadow-lg p-6 flex gap-4 transition-shadow cursor-pointer">
+                            <img src="{{ doctor.profile_picture.url }}" 
+                                 alt="{{ doctor.name }}" 
+                                 class="w-24 h-24 rounded-lg object-cover">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-semibold">{{ doctor.name }}</h3>
+                                        <p class="text-gray-600 text-sm">{{ doctor.speciality }}</p>
+                                    </div>
+                                    <button onclick="toggleFavorite(this)" class="text-gray-400 hover:text-red-500 transition-colors">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                                <div class="flex items-center mt-2">
+                                    <div class="flex text-yellow-400 mr-2">
+                                        <i class="fas fa-star"></i>
+                                        <span class="ml-1">{{ doctor.rate }}</span>
+                                    </div>
+                                    <span class="text-gray-400 mx-2">|</span>
+                                    <span class="ml-2 text-gray-600">Rp {{ doctor.fee_per_session|floatformat:0|intcomma }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleFavorite(button) {
+            const icon = button.querySelector('i');
+            
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas', 'text-red-500');
+            } else {
+                icon.classList.remove('fas', 'text-red-500');
+                icon.classList.add('far');
+            }
+        }
+    </script>
+{% endblock %}

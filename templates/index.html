@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+MedEase - Online Doctor Consultation
+{% endblock %}
+
+{% block body_class %}
+bg-gradient-to-b from-blue-50 to-white min-h-screen flex flex-col
+{% endblock %}
+
+{% block content %}
+<!-- Top Banner -->
+<div class="bg-[#2196f3] text-white text-center py-2 text-sm">
+    <p class="container mx-auto px-4">Kesehatan dan kesejahteraan pasien kami dan tim kesehatan mereka akan selalu menjadi prioritas kami, jadi kami mengikuti praktik terbaik untuk kebersihan.</p>
+</div>
+
+<!-- Navigation -->
+<nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between flex-wrap">
+            <div class="flex items-center flex-shrink-0 text-[#1a237e] mr-6">
+                <span class="text-[#2196f3] text-2xl">+</span>
+                <span class="text-2xl font-bold">MedEase</span>
+            </div>
+            <div class="block lg:hidden">
+                <button class="flex items-center px-3 py-2 border rounded text-[#1a237e] border-[#1a237e] hover:text-[#2196f3] hover:border-[#2196f3]">
+                    <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+                </button>
+            </div>
+            <div class="w-full hidden flex-grow lg:flex lg:items-center lg:w-auto">
+                <div class="text-sm lg:flex-grow">
+                    <a href="{% url 'find_doctor' %}" class="block mt-4 lg:inline-block lg:mt-0 text-[#1a237e] hover:text-[#2196f3] mr-4">Cari Dokter</a>
+                    <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-[#1a237e] hover:text-[#2196f3] mr-4">Rumah Sakit</a>
+                    <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-[#1a237e] hover:text-[#2196f3] mr-4">Obat-obatan</a>
+                    <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-[#1a237e] hover:text-[#2196f3] mr-4">Operasi</a>
+                    <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-[#1a237e] hover:text-[#2196f3] mr-4">Riwayat</a>
+                    <a href="{% url 'profile' %}" class="block mt-4 lg:inline-block lg:mt-0 text-[#1a237e] hover:text-[#2196f3]">Profil</a>
+                </div>
+                <div>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'logout' %}" class="inline-block text-sm px-4 py-2 leading-none border rounded-md text-white bg-[#ef5350] hover:bg-[#c62828] hover:text-white mt-4 lg:mt-0">Keluar</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="inline-block text-sm px-4 py-2 leading-none rounded-md text-white bg-[#2196f3] hover:bg-[#1a237e] hover:text-white mt-4 lg:mt-0">Masuk/Daftar</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="bg-gradient-to-tr from-[#E7F0FF] to-[#E8F1FF]/[0.47]">
+    <div class="container mx-auto px-4 pt-6">
+        <div class="flex flex-col lg:flex-row items-center">
+            <div class="lg:w-1/2 space-y-6">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1a237e] leading-tight">
+                    Lewati perjalanan! Lakukan
+                    <span class="text-[#2196f3]">Konsultasi Dokter Online</span>
+                </h1>
+                <p class="text-gray-600 text-lg">
+                    Terhubung langsung dengan spesialis untuk mengatasi masalah kesehatan Anda.
+                </p>
+                <div class="flex space-x-4">
+                    <button class="bg-[#2196f3] text-white px-6 py-3 rounded-full hover:bg-[#1a237e] transition-colors text-sm sm:text-base">
+                        Konsultasi Sekarang
+                    </button>
+                </div>
+            </div>
+            <div class="lg:w-1/2 mt-8 lg:mt-0">
+                <img src="{% static 'img/hero_image.svg' %}" alt="Doctors" class="w-full rounded-lg">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Specialization Section -->
+<section class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl md:text-4xl font-bold text-center text-[#1a237e] mb-12">
+        Cari Berdasarkan <br class="sm:hidden">Spesialisasi
+    </h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
+                <img src="{% static 'img/dentistry.svg' %}" alt="Dentistry" class="w-full h-full">
+            </div>
+            <h3 class="text-[#ABB6C7] text-sm sm:text-lg">Dokter Gigi</h3>
+        </div>
+        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
+                <img src="{% static 'img/primary-care.svg' %}" alt="Cardiology" class="w-full h-full">
+            </div>
+            <h3 class="text-[#ABB6C7] text-sm sm:text-lg">Perawatan Utama</h3>
+        </div>
+        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
+                <img src="{% static 'img/cardiology.svg' %}" alt="Cardiology" class="w-full h-full">
+            </div>
+            <h3 class="text-[#ABB6C7] text-sm sm:text-lg">Kardiologi</h3>
+        </div>
+        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
+                <img src="{% static 'img/mri-resonance.svg' %}" alt="MRI Resonance" class="w-full h-full">
+            </div>
+            <h3 class="text-[#ABB6C7] text-sm sm:text-lg">Tes MRI</h3>
+        </div>
+        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
+                <img src="{% static 'img/blood-test.svg' %}" alt="Blood Test" class="w-full h-full">
+            </div>
+            <h3 class="text-[#ABB6C7] text-sm sm:text-lg">Tes Darah</h3>
+        </div>
+        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
+                <img src="{% static 'img/psychologist.svg' %}" alt="Psychologist" class="w-full h-full">
+            </div>
+            <h3 class="text-[#ABB6C7] text-sm sm:text-lg">Psikolog</h3>
+        </div>
+        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
+                <img src="{% static 'img/laboratory.svg' %}" alt="Laboratory" class="w-full h-full">
+            </div>
+            <h3 class="text-[#ABB6C7] text-sm sm:text-lg">Laboratorium</h3>
+        </div>
+        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
+                <img src="{% static 'img/x-ray.svg' %}" alt="X-Ray" class="w-full h-full">
+            </div>
+            <h3 class="text-[#ABB6C7] text-sm sm:text-lg">X-Ray</h3>
+        </div>
+    </div>
+</section>
+
+<!-- Medical Specialists Section -->
+<section class="container mx-auto px-4 py-16">
+    {% comment %} <h2 class="text-3xl md:text-4xl font-bold text-center text-[#1a237e] mb-12">
+        Spesialis Medis Kami
+    </h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for doctor in doctors %}
+        <div class="text-center">
+            <div class="rounded-full overflow-hidden mb-4 aspect-square bg-blue-100">
+                <img src="{{ doctor.image.url }}" alt="{{ doctor.name }}" class="w-full h-full object-cover">
+            </div>
+            <h3 class="font-semibold text-gray-800 text-sm sm:text-base">{{ doctor.name }}</h3>
+            <p class="text-[#2196f3] text-xs sm:text-sm">{{ doctor.specialty }}</p>
+        </div>
+        {% endfor %}
+    </div> {% endcomment %}
+    <div class="container mx-auto px-4 py-16 relative">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-[#1a237e] mb-12">
+            Spesialis Medis Kami
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for doctor in doctors %}
+            <div class="text-center group">
+                <div class="rounded-full overflow-hidden mb-4 aspect-square bg-white shadow-lg hover:shadow-xl transition-shadow relative">
+                    <img src="{{ doctor.image.url }}" 
+                         alt="{{ doctor.name }}" 
+                         class="w-full h-full object-cover">
+                    <!-- Overlay putih transparan -->
+                    <div class="absolute inset-0 bg-white/[0.02] group-hover:bg-white/[0.1] transition-colors"></div>
+                </div>
+                <h3 class="font-semibold text-gray-800 text-sm sm:text-base">{{ doctor.name }}</h3>
+                <p class="text-[#2196f3] text-xs sm:text-sm">{{ doctor.speciality }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-[#1a237e] text-white py-8 mt-auto">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center space-x-2 mb-8">
+            <span class="text-[#2196f3] text-2xl">+</span>
+            <span class="text-2xl font-bold">MedEase</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2 text-sm">
+                <p>Jatinangor, Jawa Barat, Indonesia</p>
+                <p>201005</p>
+                <p>+62-88787878787</p>
+                <p>info@medease.com</p>
+            </div>
+        </div>
+        <div class="mt-8 pt-8 border-t border-blue-800">
+            <p class="text-sm text-center">
+                Copyright ©2024 MedEase. Hak Cipta Dilindungi
+            </p>
+        </div>
+    </div>
+</footer>
+{% endblock %}
