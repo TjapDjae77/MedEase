@@ -18,32 +18,37 @@ bg-gradient-to-b from-blue-50 to-white min-h-screen flex flex-col
 <!-- Navigation -->
 <nav class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-4">
-        <div class="flex items-center justify-between flex-wrap">
-            <div class="flex items-center flex-shrink-0 text-[#1a237e] mr-6">
-                <span class="text-[#2196f3] text-2xl">+</span>
-                <span class="text-2xl font-bold">MedEase</span>
+        <div class="flex items-center justify-between">
+            <!-- Logo (di kiri) -->
+            <div class="flex items-center flex-shrink-0 text-[#1a237e]">
+                <a href="{% url 'home' %}" class="flex items-center">   
+                    <span class="text-[#2196f3] text-2xl">+</span>
+                    <span class="text-2xl font-bold">MedEase</span>
+                </a>
             </div>
+
+            <!-- Menu Mobile -->
             <div class="block lg:hidden">
                 <button class="flex items-center px-3 py-2 border rounded text-[#1a237e] border-[#1a237e] hover:text-[#2196f3] hover:border-[#2196f3]">
                     <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
                 </button>
             </div>
-            <div class="w-full hidden flex-grow lg:flex lg:items-center lg:w-auto">
-                <div class="text-sm lg:flex-grow">
-                    <a href="{% url 'find_doctor' %}" class="block mt-4 lg:inline-block lg:mt-0 text-[#1a237e] hover:text-[#2196f3] mr-4">Cari Dokter</a>
-                    <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-[#1a237e] hover:text-[#2196f3] mr-4">Rumah Sakit</a>
-                    <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-[#1a237e] hover:text-[#2196f3] mr-4">Obat-obatan</a>
-                    <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-[#1a237e] hover:text-[#2196f3] mr-4">Operasi</a>
-                    <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-[#1a237e] hover:text-[#2196f3] mr-4">Riwayat</a>
-                    <a href="{% url 'profile' %}" class="block mt-4 lg:inline-block lg:mt-0 text-[#1a237e] hover:text-[#2196f3]">Profil</a>
+
+            <!-- Navigation Links (di kanan) -->
+            <div class="hidden lg:flex lg:items-center">
+                <div class="mr-12 space-x-4">
+                    <a href="{% url 'find_doctor' %}" class="text-[#1a237e] hover:text-[#2196f3]">Cari Dokter</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Rumah Sakit</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Obat-obatan</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Operasi</a>
+                    <a href="{% url 'history' %}" class="text-[#1a237e] hover:text-[#2196f3]">Riwayat</a>
+                    <a href="{% url 'profile' %}" class="text-[#1a237e] hover:text-[#2196f3]">Profil</a>
                 </div>
-                <div>
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'logout' %}" class="inline-block text-sm px-4 py-2 leading-none border rounded-md text-white bg-[#ef5350] hover:bg-[#c62828] hover:text-white mt-4 lg:mt-0">Keluar</a>
-                    {% else %}
-                        <a href="{% url 'login' %}" class="inline-block text-sm px-4 py-2 leading-none rounded-md text-white bg-[#2196f3] hover:bg-[#1a237e] hover:text-white mt-4 lg:mt-0">Masuk/Daftar</a>
-                    {% endif %}
-                </div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="text-white bg-[#ef5350] hover:bg-[#c62828] px-4 py-2 rounded-md">Keluar</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-white bg-[#2196f3] hover:bg-[#1a237e] px-4 py-2 rounded-md">Masuk/Daftar</a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -62,9 +67,9 @@ bg-gradient-to-b from-blue-50 to-white min-h-screen flex flex-col
                     Terhubung langsung dengan spesialis untuk mengatasi masalah kesehatan Anda.
                 </p>
                 <div class="flex space-x-4">
-                    <button class="bg-[#2196f3] text-white px-6 py-3 rounded-full hover:bg-[#1a237e] transition-colors text-sm sm:text-base">
+                    <a href="{% url 'find_doctor' %}" class="bg-[#2196f3] text-white px-6 py-3 rounded-full hover:bg-[#1a237e] transition-colors text-sm sm:text-base">
                         Konsultasi Sekarang
-                    </button>
+                    </a>
                 </div>
             </div>
             <div class="lg:w-1/2 mt-8 lg:mt-0">
@@ -80,24 +85,24 @@ bg-gradient-to-b from-blue-50 to-white min-h-screen flex flex-col
         Cari Berdasarkan <br class="sm:hidden">Spesialisasi
     </h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
+        <a href="{% url 'find_doctor' %}?speciality=Gigi" class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer block">
             <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
                 <img src="{% static 'img/dentistry.svg' %}" alt="Dentistry" class="w-full h-full">
             </div>
             <h3 class="text-[#ABB6C7] text-sm sm:text-lg">Dokter Gigi</h3>
-        </div>
+        </a>
         <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
             <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
                 <img src="{% static 'img/primary-care.svg' %}" alt="Cardiology" class="w-full h-full">
             </div>
             <h3 class="text-[#ABB6C7] text-sm sm:text-lg">Perawatan Utama</h3>
         </div>
-        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
+        <a href="{% url 'find_doctor' %}?speciality=Jantung" class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer block">
             <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
                 <img src="{% static 'img/cardiology.svg' %}" alt="Cardiology" class="w-full h-full">
             </div>
             <h3 class="text-[#ABB6C7] text-sm sm:text-lg">Kardiologi</h3>
-        </div>
+        </a>
         <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
             <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
                 <img src="{% static 'img/mri-resonance.svg' %}" alt="MRI Resonance" class="w-full h-full">
@@ -110,12 +115,12 @@ bg-gradient-to-b from-blue-50 to-white min-h-screen flex flex-col
             </div>
             <h3 class="text-[#ABB6C7] text-sm sm:text-lg">Tes Darah</h3>
         </div>
-        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
+        <a href="{% url 'find_doctor' %}?speciality=Psikolog" class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer block">
             <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
                 <img src="{% static 'img/psychologist.svg' %}" alt="Psychologist" class="w-full h-full">
             </div>
             <h3 class="text-[#ABB6C7] text-sm sm:text-lg">Psikolog</h3>
-        </div>
+        </a>
         <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow cursor-pointer">
             <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[#2196f3]">
                 <img src="{% static 'img/laboratory.svg' %}" alt="Laboratory" class="w-full h-full">
@@ -132,7 +137,7 @@ bg-gradient-to-b from-blue-50 to-white min-h-screen flex flex-col
 </section>
 
 <!-- Medical Specialists Section -->
-<section class="container mx-auto px-4 py-16">
+{% comment %} <section class="container mx-auto px-4 py-16">
     {% comment %} <h2 class="text-3xl md:text-4xl font-bold text-center text-[#1a237e] mb-12">
         Spesialis Medis Kami
     </h2>
@@ -146,7 +151,7 @@ bg-gradient-to-b from-blue-50 to-white min-h-screen flex flex-col
             <p class="text-[#2196f3] text-xs sm:text-sm">{{ doctor.specialty }}</p>
         </div>
         {% endfor %}
-    </div> {% endcomment %}
+    </div>
     <div class="container mx-auto px-4 py-16 relative">
         <h2 class="text-3xl md:text-4xl font-bold text-center text-[#1a237e] mb-12">
             Spesialis Medis Kami
@@ -167,7 +172,7 @@ bg-gradient-to-b from-blue-50 to-white min-h-screen flex flex-col
             {% endfor %}
         </div>
     </div>
-</section>
+</section> {% endcomment %}
 
 <!-- Footer -->
 <footer class="bg-[#1a237e] text-white py-8 mt-auto">

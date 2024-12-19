@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Pembayaran - MedEase{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Header dengan logo -->
+    <div class="bg-white shadow">
+        <div class="container mx-auto px-4 py-4">
+            <a href="{% url 'home' %}" class="flex items-center">
+                <span class="text-[#2196f3] text-2xl">+</span>
+                <span class="text-2xl text-[#1a237e] font-bold">MedEase</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Konten Utama -->
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-[#1a237e] mb-8">Pembayaran</h1>
+        
+        <!-- Card Dokter -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8 flex items-center space-x-4">
+            <img src="{{ doctor.profile_picture.url }}" alt="{{ doctor.name }}" 
+                 class="w-16 h-16 rounded-full object-cover">
+            <div>
+                <h2 class="text-xl font-semibold">{{ doctor.name }}</h2>
+                <p class="text-gray-600">{{ doctor.speciality }}</p>
+                <div class="flex items-center">
+                    <span class="text-yellow-400">★</span>
+                    <span class="ml-1">{{ doctor.rate }}</span>
+                    <span class="text-gray-400 mx-2">|</span>
+                    <span class="text-gray-600">Rp{{ doctor.fee_per_session|floatformat:0|intcomma }} /sesi</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail Pembayaran -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h3 class="text-lg font-semibold mb-4">Detail Pembayaran</h3>
+            <div class="space-y-4">
+                <!-- Informasi Jadwal -->
+                <div class="mb-4 pb-4 border-b">
+                    <h4 class="font-medium text-gray-900 mb-2">Jadwal Konsultasi:</h4>
+                    {% if package_type == 'regular' %}
+                        <p class="text-gray-600">
+                            Tanggal: {{ selectedDates }}<br>
+                            Jam: {{ selectedTime }}
+                        </p>
+                    {% else %}
+                        <p class="text-gray-600">
+                            Tanggal Mulai: {{ selectedDates }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <!-- Detail Biaya -->
+                <div class="flex justify-between">
+                    <span class="text-gray-600">
+                        Biaya Konsultasi 
+                        {% if package_type == 'regular' %}
+                            (30 menit)
+                        {% elif package_type == '1day' %}
+                            (1 hari)
+                        {% elif package_type == '3day' %}
+                            (3 hari)
+                        {% else %}
+                            (7 hari)
+                        {% endif %}
+                    </span>
+                    <span>Rp{{ consultation_fee|floatformat:0|intcomma }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Biaya Admin</span>
+                    <span>Rp{{ admin_fee|floatformat:0|intcomma }}</span>
+                </div>
+                <div class="border-t pt-4 flex justify-between font-semibold">
+                    <span>Total</span>
+                    <span>Rp{{ total|floatformat:0|intcomma }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kupon -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <div class="flex space-x-4">
+                <input type="text" placeholder="Enter coupon code" 
+                       class="flex-1 border rounded-lg px-4 py-2">
+                <button class="bg-[#2196f3] text-white px-6 py-2 rounded-lg hover:bg-[#1a237e] transition-colors">
+                    Pakai Kupon
+                </button>
+            </div>
+        </div>
+
+        <!-- Metode Pembayaran -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h3 class="text-lg font-semibold mb-4">Metode Pembayaran</h3>
+            <div class="space-y-4">
+                <label class="flex items-center space-x-3">
+                    <input type="radio" name="payment_method" value="virtual_account" class="text-[#2196f3]">
+                    <span>Virtual Account</span>
+                </label>
+                <label class="flex items-center space-x-3">
+                    <input type="radio" name="payment_method" value="bank_transfer" class="text-[#2196f3]">
+                    <span>Transfer Bank</span>
+                </label>
+                <label class="flex items-center space-x-3">
+                    <input type="radio" name="payment_method" value="card" class="text-[#2196f3]">
+                    <span>Kartu Kredit/Debit</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Tambahkan hidden inputs untuk data yang diperlukan -->
+        {% csrf_token %}
+        <input type="hidden" name="doctor_id" value="{{ doctor.id }}">
+        <input type="hidden" name="package_type" value="{{ package_type }}">
+        <input type="hidden" name="consultation_date" value="{{ selectedDates }}">
+        {% if package_type == 'regular' %}
+            <input type="hidden" name="consultation_time" value="{{ selectedTime }}">
+        {% else %}
+            <input type="hidden" name="consultation_time" value="08:00">
+        {% endif %}
+
+        <!-- Tombol Konfirmasi -->
+        <button type="button" 
+                class="payment-button w-full bg-[#2196f3] text-white py-3 rounded-lg hover:bg-[#1a237e] transition-colors font-semibold">
+            Konfirmasi dan Bayar
+        </button>
+
+        <!-- Script -->
+        <script src="{% static 'js/payment.js' %}"></script>
+    </div>
+</div>
+{% endblock %}

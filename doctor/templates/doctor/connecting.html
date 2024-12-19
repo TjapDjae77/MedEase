@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Menghubungkan ke Dokter - MedEase
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col">
+    <!-- Logo di pojok kiri atas -->
+    <div class="p-4">
+        <a href="{% url 'home' %}" class="flex items-center">
+            <span class="text-[#2196f3] text-2xl">+</span>
+            <span class="text-2xl text-[#1a237e] font-bold">MedEase</span>
+        </a>
+    </div>
+
+    <!-- Konten Utama -->
+    <div class="flex-grow flex flex-col items-center justify-center">
+        <h1 class="text-4xl font-bold text-[#1a237e] mb-4">Menghubungkan ke Dokter...</h1>
+        <p class="text-xl text-gray-500 mb-8">Silakan tunggu</p>
+        
+        <!-- Loading Animation (optional) -->
+        <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-[#2196f3]"></div>
+    </div>
+</div>
+
+<script>
+    // Redirect ke halaman status konsultasi setelah beberapa detik
+    setTimeout(() => {
+        const packageType = "{{ package_type }}";
+        window.location.href = "{% url 'consultation_status' doctor.id %}?package_type=" + packageType;
+    }, 3000);
+</script>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pembayaran Berhasil - MedEase{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-[#2196f3] flex flex-col items-center justify-center text-white px-4">
+    <!-- Check Icon -->
+    <div class="w-24 h-24 rounded-full border-4 border-white flex items-center justify-center mb-8">
+        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+    </div>
+
+    <!-- Text Content -->
+    <h1 class="text-4xl font-bold mb-4">Selamat</h1>
+    <p class="text-xl mb-8">Pembayaran Anda Berhasil</p>
+
+    <!-- Button -->
+    <a href="{% url 'history' %}" 
+       class="bg-white text-[#2196f3] px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors">
+        Lihat Riwayat
+    </a>
+</div>
+{% endblock %} 

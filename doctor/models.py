@@ -11,6 +11,7 @@ class Doctor(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, verbose_name="Jenis Kelamin")
     rate = models.DecimalField(max_digits=3, decimal_places=1, default=5.0, verbose_name="Rating")
     fee_per_session = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Biaya per Sesi")
+    description = models.TextField(null=True, blank=True, verbose_name="Deskripsi")
     profile_picture = models.ImageField(upload_to='media/doctor/', verbose_name="Foto Profil")
 
     class Meta:

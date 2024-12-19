@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Chat dengan {{ consultation.doctor.name }} - MedEase{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <div class="bg-white shadow-md fixed top-0 w-full z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Back Button dan Info Dokter -->
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'history' %}" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </a>
+                    <div class="flex items-center space-x-3">
+                        <img src="{{ consultation.doctor.profile_picture.url }}" 
+                             alt="{{ consultation.doctor.name }}" 
+                             class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <h2 class="font-semibold">{{ consultation.doctor.name }}</h2>
+                            <div class="flex items-center">
+                                <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                <span class="ml-1 text-sm text-gray-600">Online</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Remaining Time -->
+                <div id="remainingTime" class="text-sm text-gray-600">
+                    Mengecek sisa waktu...
+                </div>
+                
+                <!-- End Session Button -->
+                {% if consultation.status == 'in_progress' %}
+                <button id="endSessionBtn" 
+                        class="px-4 py-2 bg-[#2196f3] text-white rounded-md hover:bg-blue-600">
+                    End Session
+                </button>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Messages -->
+    <div class="container mx-auto px-4 pt-20 pb-24">
+        <div id="chatMessages" class="space-y-4">
+            {% for message in messages %}
+                <div class="flex {% if message.is_from_doctor %}items-start{% else %}items-end justify-end{% endif %}">
+                    {% if message.is_from_doctor %}
+                        <div class="flex-shrink-0 mr-3">
+                            <img src="{{ consultation.doctor.profile_picture.url }}" 
+                                 class="w-8 h-8 rounded-full">
+                        </div>
+                    {% endif %}
+                    <div class="{% if message.is_from_doctor %}bg-blue-50{% else %}bg-white{% endif %} rounded-lg p-3 max-w-md shadow">
+                        <p class="text-gray-800">{{ message.content }}</p>
+                        <p class="text-xs text-gray-500 mt-1">{{ message.created_at|time:"H:i" }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Chat Input -->
+    <div class="fixed bottom-0 w-full bg-white border-t">
+        <div class="container mx-auto px-4 py-3">
+            {% if consultation.status == 'completed' %}
+                <div class="text-center text-gray-600 py-2">
+                    Sesi konsultasi telah berakhir.
+                </div>
+            {% else %}
+                <form id="chatForm" class="flex items-center space-x-3">
+                    {% csrf_token %}
+                    <div class="flex-1 relative">
+                        <button type="button" class="absolute left-3 top-1/2 transform -translate-y-1/2">
+                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
+                            </svg>
+                        </button>
+                        <input type="text" 
+                               id="messageInput"
+                               placeholder="Type a message..." 
+                               class="w-full pl-12 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <button type="submit" 
+                            class="p-2 rounded-full bg-[#2196f3] text-white transition-all duration-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                        </svg>
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Set consultation ID dan doctor profile picture dari template
+    const consultationId = {{ consultation.id }};
+    const doctorProfilePicture = "{{ consultation.doctor.profile_picture.url|escapejs }}";
+</script>
+
+<script src="{% static 'js/consultation.js' %}"></script>
+{% endblock %}

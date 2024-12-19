@@ -12,33 +12,39 @@ Profile - MedEase
 </div>
 
 <!-- Navigation -->
-<nav class="bg-white border-b">
-    <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center h-16">
-            <div class="flex items-center">
-                <a href="{% url 'home' %}" class="flex items-center">
-                    <span class="text-[#2196f3] text-2xl mr-1">+</span>
-                    <span class="text-2xl text-[#1a237e] font-bold">MedEase</span>
+<nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+            <!-- Logo (di kiri) -->
+            <div class="flex items-center flex-shrink-0 text-[#1a237e]">
+                <a href="{% url 'home' %}" class="flex items-center">   
+                    <span class="text-[#2196f3] text-2xl">+</span>
+                    <span class="text-2xl font-bold">MedEase</span>
                 </a>
             </div>
 
-            <!-- Desktop Navigation -->
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="{% url 'find_doctor' %}" class="text-[#1a237e] hover:text-[#2196f3]">Cari Dokter</a>
-                <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Rumah Sakit</a>
-                <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Obat-obatan</a>
-                <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Operasi</a>
-                <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Riwayat</a>
-                <a href="{% url 'profile' %}" class="text-[#2196f3]">Profil</a>
+            <!-- Menu Mobile -->
+            <div class="block lg:hidden">
+                <button class="flex items-center px-3 py-2 border rounded text-[#1a237e] border-[#1a237e] hover:text-[#2196f3] hover:border-[#2196f3]">
+                    <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+                </button>
             </div>
 
-            <!-- Mobile menu button -->
-            <div class="md:hidden">
-                <button class="text-gray-600 hover:text-gray-900 p-2">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
+            <!-- Navigation Links (di kanan) -->
+            <div class="hidden lg:flex lg:items-center">
+                <div class="mr-12 space-x-4">   
+                    <a href="{% url 'find_doctor' %}" class="text-[#1a237e] hover:text-[#2196f3]">Cari Dokter</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Rumah Sakit</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Obat-obatan</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Operasi</a>
+                    <a href="{% url 'history' %}" class="text-[#1a237e] hover:text-[#2196f3]">Riwayat</a>
+                    <a href="{% url 'profile' %}" class="text-[#2196f3] border-b-2 border-[#2196f3] pb-1">Profil</a>
+                </div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="text-white bg-[#ef5350] hover:bg-[#c62828] px-4 py-2 rounded-md">Keluar</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-white bg-[#2196f3] hover:bg-[#1a237e] px-4 py-2 rounded-md">Masuk/Daftar</a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -116,4 +122,27 @@ Profile - MedEase
         </a>
     </div>
 </main>
+
+<!-- Footer -->
+<footer class="bg-[#1a237e] text-white py-8 mt-auto">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center space-x-2 mb-8">
+            <span class="text-[#2196f3] text-2xl">+</span>
+            <span class="text-2xl font-bold">MedEase</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2 text-sm">
+                <p>Jatinangor, Jawa Barat, Indonesia</p>
+                <p>201005</p>
+                <p>+62-88787878787</p>
+                <p>info@medease.com</p>
+            </div>
+        </div>
+        <div class="mt-8 pt-8 border-t border-blue-800">
+            <p class="text-sm text-center">
+                Copyright ©2024 MedEase. Hak Cipta Dilindungi
+            </p>
+        </div>
+    </div>
+</footer>
 {% endblock %}

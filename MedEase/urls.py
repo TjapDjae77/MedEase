@@ -27,6 +27,9 @@ urlpatterns = [
     path('patient/', include('patient.urls')),
     path('doctor/', include('doctor.urls')),
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
+    path('payment/', include('payment.urls')),
+    path('history/', include('history.urls')),
+    path('consultation/', include('consultation.urls')),
 ]
 
 if settings.DEBUG:

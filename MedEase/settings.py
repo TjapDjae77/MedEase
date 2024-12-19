@@ -48,8 +48,9 @@ INSTALLED_APPS = [
     'medease_theme',
     'patient',
     'doctor',
-    # 'appointment',
-    # 'review',
+    'payment',
+    'consultation',
+    'history',
     
 ]
 

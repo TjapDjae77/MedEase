@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+Pilih Jadwal Konsultasi - MedEase
+{% endblock %}
+
+{% block content %}
+<!-- Top Banner -->
+<div class="bg-[#2196f3] text-white text-center py-2 text-sm">
+    <p class="container mx-auto px-4">Kesehatan dan kesejahteraan pasien kami dan tim kesehatan mereka akan selalu menjadi prioritas kami, jadi kami mengikuti praktik terbaik untuk kebersihan.</p>
+</div>
+
+<!-- Navigation -->
+<nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+            <!-- Logo (di kiri) -->
+            <div class="flex items-center flex-shrink-0 text-[#1a237e]">
+                <a href="{% url 'home' %}" class="flex items-center">
+                    <span class="text-[#2196f3] text-2xl">+</span>
+                    <span class="text-2xl text-[#1a237e] font-bold">MedEase</span>
+                </a>
+            </div>
+
+            <!-- Menu Mobile -->
+            <div class="block lg:hidden">
+                <button class="flex items-center px-3 py-2 border rounded text-[#1a237e] border-[#1a237e] hover:text-[#2196f3] hover:border-[#2196f3]">
+                    <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+                </button>
+            </div>
+
+            <!-- Navigation Links (di kanan) -->
+            <div class="hidden lg:flex lg:items-center">
+                <div class="mr-12 space-x-4">
+                    <a href="{% url 'find_doctor' %}" class="text-[#1a237e] hover:text-[#2196f3]">Cari Dokter</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Rumah Sakit</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Obat-obatan</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Operasi</a>
+                    <a href="#" class="text-[#1a237e] hover:text-[#2196f3]">Riwayat</a>
+                    <a href="{% url 'profile' %}" class="text-[#1a237e] hover:text-[#2196f3]">Profil</a>
+                </div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="text-white bg-[#ef5350] hover:bg-[#c62828] px-4 py-2 rounded-md">Keluar</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-white bg-[#2196f3] hover:bg-[#1a237e] px-4 py-2 rounded-md">Masuk/Daftar</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mx-auto px-4 py-8">
+    <!-- Hidden inputs -->
+    <input type="hidden" name="package_type" id="packageType" value="{{ package_type }}">
+    <input type="hidden" name="selectedDate" id="selectedDateInput">
+    {% if package_type == 'regular' %}
+        <input type="hidden" name="selectedTime" id="selectedTimeInput">
+    {% endif %}
+    
+    <!-- Package Info -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <div class="flex items-center gap-4 mb-6">
+            <img src="{{ doctor.profile_picture.url }}" 
+                 alt="{{ doctor.name }}" 
+                 class="w-16 h-16 rounded-full object-cover">
+            <div>
+                <h2 class="text-xl font-bold text-[#1a237e]">{{ doctor.name }}</h2>
+                <p class="text-[#2196f3]">{{ doctor.speciality }}</p>
+            </div>
+        </div>
+        
+        <!-- Selected Package Info -->
+        <div class="bg-blue-50 rounded-lg p-4">
+            <h3 class="font-semibold text-[#1a237e] mb-2">
+                {% if package_type == 'regular' %}
+                    Konsultasi Reguler
+                {% elif package_type == '1day' %}
+                    Paket 1 Hari
+                {% elif package_type == '3day' %}
+                    Paket 3 Hari
+                {% else %}
+                    Paket 7 Hari
+                {% endif %}
+            </h3>
+            <p class="text-gray-600">Rp{{ price|floatformat:0|intcomma }}</p>
+            <div id="selectedDatesInfo" class="mt-2 text-sm text-[#2196f3] hidden">
+                Tanggal yang dipilih: <span id="selectedDatesText"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Calendar -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="flex justify-between items-center mb-6">
+                <button class="text-[#1a237e] hover:text-[#2196f3] p-2" id="prevMonth">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <h2 class="text-lg font-semibold text-[#1a237e]" id="currentMonth">Maret 2024</h2>
+                <button class="text-[#1a237e] hover:text-[#2196f3] p-2" id="nextMonth">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- Calendar Grid -->
+            <div class="mb-4">
+                <!-- Days Header -->
+                <div class="grid grid-cols-7 gap-2 mb-2">
+                    <div class="text-center text-sm text-gray-600 font-medium p-2">Min</div>
+                    <div class="text-center text-sm text-gray-600 font-medium p-2">Sen</div>
+                    <div class="text-center text-sm text-gray-600 font-medium p-2">Sel</div>
+                    <div class="text-center text-sm text-gray-600 font-medium p-2">Rab</div>
+                    <div class="text-center text-sm text-gray-600 font-medium p-2">Kam</div>
+                    <div class="text-center text-sm text-gray-600 font-medium p-2">Jum</div>
+                    <div class="text-center text-sm text-gray-600 font-medium p-2">Sab</div>
+                </div>
+
+                <!-- Calendar Days -->
+                <div id="calendarDays" class="grid grid-cols-7 gap-2">
+                    <!-- Days will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Time Slots (hanya muncul untuk konsultasi reguler) -->
+        {% if package_type == 'regular' %}
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-lg font-semibold text-[#1a237e] mb-6">Pilih Waktu</h3>
+            <div class="grid grid-cols-2 gap-4" id="timeSlots">
+                {% with ''|center:24 as range %}
+                {% for _ in range %}
+                    {% with forloop.counter|add:-1 as hour %}
+                    <button onclick="selectTime('{{ hour|stringformat:'02d' }}:00', this)" 
+                            class="text-center py-2 px-4 rounded-lg border-2 border-[#2196f3] text-gray-300 hover:bg-blue-50 transition-colors cursor-not-allowed"
+                            disabled>
+                        {{ hour|stringformat:"02d" }}:00
+                    </button>
+                    {% endwith %}
+                {% endfor %}
+                {% endwith %}
+            </div>
+        </div>
+        {% else %}
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-lg font-semibold text-[#1a237e] mb-6">Waktu Operasional</h3>
+            <p class="text-gray-600">Jam operasional: 08.00-20.00</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Continue Button -->
+    <form id="scheduleForm" method="POST" action="{% url 'save_schedule' doctor.id package_type %}" class="flex justify-center">
+        {% csrf_token %}
+        <input type="hidden" name="selectedDate" id="selectedDateInput">
+        {% if package_type == 'regular' %}
+            <input type="hidden" name="selectedTime" id="selectedTimeInput">
+        {% endif %}
+        <button type="submit" 
+                id="continueButton" 
+                disabled 
+                class="w-fit bg-[#2196f3] text-white mt-4 py-3 px-4 rounded-lg hover:bg-[#1a237e] transition-colors font-semibold">
+            Ajukan Jadwal ke Dokter
+        </button>
+    </form>
+</div>
+
+<!-- Footer -->
+<footer class="bg-[#1a237e] text-white py-8 mt-auto">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center space-x-2 mb-8">
+            <span class="text-[#2196f3] text-2xl">+</span>
+            <span class="text-2xl font-bold">MedEase</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2 text-sm">
+                <p>Jatinangor, Jawa Barat, Indonesia</p>
+                <p>201005</p>
+                <p>+62-88787878787</p>
+                <p>info@medease.com</p>
+            </div>
+        </div>
+        <div class="mt-8 pt-8 border-t border-blue-800">
+            <p class="text-sm text-center">
+                Copyright ©2024 MedEase. Hak Cipta Dilindungi
+            </p>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript for Calendar -->
+<script src="{% static 'js/schedule.js' %}"></script>
+{% endblock %}
