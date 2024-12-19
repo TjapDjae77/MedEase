@@ -32,6 +32,8 @@ DEBUG = getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = getenv('ALLOWED_HOSTS', '').split(',')
 
+CSRF_TRUSTED_ORIGINS = ['https://medease-production.up.railway.app']
+
 
 # Application definition
 
@@ -142,11 +144,11 @@ NUMBER_GROUPING = 3
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/staticfiles/'
 STATICFILES_DIRS = [
     BASE_DIR / "medease_theme" / "static",
 ]
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
