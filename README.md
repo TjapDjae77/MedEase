@@ -7,7 +7,7 @@ Nama **MedEase** berasal dari gabungan kata "Medical" dan "Ease", yang berarti "
 
 ### Paket Konsultasi Fleksibel
 - Pengguna dapat memilih paket untuk beberapa hari, memungkinkan konsultasi berkelanjutan tanpa perlu membayar per sesi.
-- Fleksibilitas untuk berkonsultasi dengan dokter yang berbeda selama periode paket yang dipilih.
+- Fleksibilitas untuk berkonsultasi dengan dokter sepuasnya selama periode paket yang dipilih dan selama jam operasional dokter yaitu 08.00 hingga 20.00.
 
 ### Akses Online
 - Menyediakan platform yang mulus bagi pengguna untuk terhubung dengan tenaga kesehatan kapan saja dan di mana saja.
@@ -31,7 +31,7 @@ MedEase bertujuan untuk menjembatani kesenjangan antara penyedia layanan kesehat
 ## Teknologi yang Digunakan
 
 ### Frontend
-- HTML, CSS, JavaScript
+- HTML (Django Template Engine), CSS (Tailwind CSS), JavaScript (Vanilla)
 
 ### Backend
 - Django
@@ -41,7 +41,6 @@ MedEase bertujuan untuk menjembatani kesenjangan antara penyedia layanan kesehat
 
 ### Platform Hosting
 - Backend: Railway
-- Frontend: Vercel
 
 ### DevOps
 - Docker (untuk backend)
@@ -95,7 +94,4 @@ Kami menyambut kontribusi dari pengembang, desainer, dan profesional kesehatan. 
 
 ## Lisensi
 Proyek ini dilisensikan di bawah Lisensi MIT. Lihat file `LICENSE` untuk detailnya.
-
-## Kontak
-Untuk pertanyaan atau dukungan, silakan hubungi kami di [support@medease.com](mailto:support@medease.com).
 
